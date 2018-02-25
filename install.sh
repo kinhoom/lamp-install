@@ -1,4 +1,8 @@
 #!/bin/bash
+#########################
+###author:alex kinhoom###
+###date:20180225#########
+#########################
 UNAME=`whoami` #获得用户名
 [ $UNAME != "root" ] && echo "The script only root can run " && echo  "Please switch user to root ! " && exit 1
 
