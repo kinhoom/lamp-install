@@ -1,8 +1,4 @@
 #!/bin/bash
-#########################
-###author:alex kinhoom###
-###date:20180225#########
-#########################
 UNAME=`whoami` #获得用户名
 [ $UNAME != "root" ] && echo "The script only root can run " && echo  "Please switch user to root ! " && exit 1
 
@@ -343,13 +339,13 @@ sed -i 386aAddType\ application\/x-httpd-php\ \.php\ \.phtml\ \.php3 /etc/httpd/
 [ $(echo $?) -ne 0 ] && exit 1
 
 #set apache server start runing when system start-up
-cp $INSTALL_PATH/apache/bin/apachectl /etc/init.d/httpd
-sed -i -e 2a#\ chkconfig:\ 234\ 71\ 29 /etc/init.d/httpd -e 2a#\ description:\ Apache\ is\ a\ World\ Wide\ Web\ server. /etc/init.d/httpd
+cp $INSTALL_PATH/apache/bin/apachectl /etc/init.d/httpd #此步实现service httpd start|stop|restart
+sed -i -e 2a#\ chkconfig:\ 234\ 71\ 29 /etc/init.d/httpd -e 2a#\ description:\ Apache\ is\ a\ World\ Wide\ Web\ server. /etc/init.d/httpd #分别在第二行追加写入chkconfig以及description -e先追加后面的表达式中的内容
 [ $(echo $?) -ne 0 ] && exit 1
-chkconfig --add httpd >/dev/null 2>&1
+chkconfig --add httpd >/dev/null 2>&1 #增加httpd服务,使其开机启动 
 
 #Set Envirment variable
-sed -i "10s%$%&:$INSTALL_PATH/apache/bin%" /root/.bash_profile 
+sed -i "10s%$%&:$INSTALL_PATH/apache/bin%" /root/.bash_profile #在第10行行末尾添加新的root用户环境变量，此处&的作用是保存结尾字符以替换结尾字符
 source /root/.bash_profile
 
 ##  Configure Mysql Configuation Files
@@ -372,3 +368,7 @@ service mysqld start
 
 ## Clean Useless File Or Directory
 rm -fr $EXTRACT_PATH
+
+echo '#######################################################################'
+echo '####install complete!##################################################'
+echo '#######################################################################'
